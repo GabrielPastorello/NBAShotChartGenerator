@@ -1,4 +1,4 @@
-# NBAShotChartGenerator
+# NBA Shot Chart Generator
 Generate shot charts of any NBA player, of any season in a simple and intuitive graphic interface
 
 ### To properly execute the NBA Shot Chart Generator:
