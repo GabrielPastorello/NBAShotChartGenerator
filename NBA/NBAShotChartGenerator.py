@@ -23,7 +23,7 @@ from PIL import ImageTk,Image
 
 
 # get_player_shotchartdetail: player_name, season_id -> player_shotchart_df, league_avg
-def get_player_shotchartdetail(player_name, season_id):
+def get_player_shotchartdetail(player_name, season_id, season_progress):
 
     # player dictionary
     nba_players = players.get_players()
@@ -39,7 +39,7 @@ def get_player_shotchartdetail(player_name, season_id):
     # shotchartdetail endpoints
     shotchartlist = shotchartdetail.ShotChartDetail(team_id=int(team_id),
                                                     player_id=int(player_dict['id']),
-                                                    season_type_all_star='Regular Season',
+                                                    season_type_all_star=season_progress,
                                                     season_nullable=season_id,
                                                     context_measure_simple='FGA').get_data_frames()
 
@@ -91,8 +91,8 @@ def draw_court(ax=None, color="blue", lw=1, outer_lines=False):
     for element in court_elements:
         ax.add_patch(element)
 
-def shot_chart(data, title="", color="b", xlim=(-250, 250), ylim=(422.5, -47.5), line_color="blue",
-               court_color="white", court_lw=2, outer_lines=False,
+def shot_chart(data, title="", color="b", xlim=(-250, 250), ylim=(422.5, -47.5), line_color="#00158f",
+               court_color="#f5f5f5", court_lw=2, outer_lines=False,
                flip_court=False, gridsize=None,
                ax=None, despine=False):
 
@@ -148,9 +148,12 @@ def popupmsg(msg):
 def myClick():
     player_name = e.get()
     season_id = clicked.get()
+    if len(season_id) > 7:
+        season_id = season_id[2:9]
+    season_progress = clicked2.get()
 
     try:
-        player_shotchart_df, league_avg = get_player_shotchartdetail(player_name, season_id)
+        player_shotchart_df, league_avg = get_player_shotchartdetail(player_name, season_id, season_progress)
 
         shot_chart(player_shotchart_df, title=player_name+' Shot Chart ' + season_id)
 
@@ -158,12 +161,21 @@ def myClick():
         plt.show()
     except (TypeError, IndexError) as er:
         popupmsg(er)
-        
 
 screen = tk.ThemedTk()
 screen.get_themes()
 screen.set_theme("breeze")
-screen.geometry("400x360+700+300")
+
+width_of_window = 400
+height_of_window = 400
+
+screen_width = screen.winfo_screenwidth()
+screen_height = screen.winfo_screenheight()
+
+x_coordinate = int((screen_width/2) - (width_of_window/2))
+y_coordinate = int((screen_height/2) - (height_of_window/2))
+
+screen.geometry("{}x{}+{}+{}".format(width_of_window, height_of_window, x_coordinate, y_coordinate))
 screen.title("NBA Shot Chart Generator")
 screen.iconbitmap('nba.ico')
 
@@ -212,10 +224,17 @@ season_frame_ = LabelFrame(season_frame, text="Select a Season:", font=('Helveti
 season_frame_.grid(row=0, column=0, padx=50)
     
 drop = OptionMenu(season_frame_, clicked, *options)
-drop.pack(pady=20)
+drop.pack(pady=10)
+
+reg_or_offs = ['Regular Season', 'Playoffs', 'Pre Season']
+
+clicked2 = StringVar()
+clicked2.set(reg_or_offs[0])
+
+drop = OptionMenu(season_frame_, clicked2, *reg_or_offs)
+drop.pack(pady=10)
 
 myButton = Button(screen, text="Generate Shot Chart", command=myClick, fg='black', font=('Helvetica', 14, 'bold'))
-myButton.pack()
+myButton.pack(pady=10)
 
 screen.mainloop()
-
