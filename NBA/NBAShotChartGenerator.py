@@ -155,7 +155,7 @@ def myClick():
     try:
         player_shotchart_df, league_avg = get_player_shotchartdetail(player_name, season_id, season_progress)
 
-        shot_chart(player_shotchart_df, title=player_name+' Shot Chart ' + season_id)
+        shot_chart(player_shotchart_df, title=player_name+' Shot Chart ' + season_id + '\n' + season_progress)
 
         plt.rcParams['figure.figsize'] = (12, 11)
         plt.show()
@@ -238,3 +238,4 @@ myButton = Button(screen, text="Generate Shot Chart", command=myClick, fg='black
 myButton.pack(pady=10)
 
 screen.mainloop()
+
