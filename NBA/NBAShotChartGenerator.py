@@ -178,15 +178,17 @@ y_coordinate = int((screen_height/2) - (height_of_window/2))
 screen.geometry("{}x{}+{}+{}".format(width_of_window, height_of_window, x_coordinate, y_coordinate))
 screen.title("NBA Shot Chart Generator")
 screen.iconbitmap('nba.ico')
+screen.config(background='#17408B')
 
 img = Image.open("logo-nba.png")
 resized = img.resize((70,70), Image.ANTIALIAS)
 img = ImageTk.PhotoImage(resized)
-Label(screen, image=img).pack(pady=10)
+Label(screen, image=img, background='#17408B').pack(pady=10)
 
-Label(screen, text="Player Name:", font=('Helvetica', 14, 'bold')).pack()
+Label(screen, text="Player Name:", font=('Helvetica', 14, 'bold'), background='#17408B', fg='white').pack()
 e = Entry(screen, borderwidth=4)
 e.pack()
+e.config(fg='black')
 #e.insert(0, "Player name here") # initial message (optional)
 
 options = ["1996-97",
@@ -219,12 +221,14 @@ clicked.set(options[-1:])
 
 season_frame = Frame(screen)
 season_frame.pack(pady=20)
+season_frame.config(background='#17408B')
 
-season_frame_ = LabelFrame(season_frame, text="Select a Season:", font=('Helvetica', 10, 'bold'))
+season_frame_ = LabelFrame(season_frame, text="Select a Season:", font=('Helvetica', 10, 'bold'), background='#17408B', fg='white')
 season_frame_.grid(row=0, column=0, padx=50)
     
 drop = OptionMenu(season_frame_, clicked, *options)
 drop.pack(pady=10)
+drop.config(highlightbackground='#17408B', fg='black')
 
 reg_or_offs = ['Regular Season', 'Playoffs', 'Pre Season']
 
@@ -233,9 +237,9 @@ clicked2.set(reg_or_offs[0])
 
 drop = OptionMenu(season_frame_, clicked2, *reg_or_offs)
 drop.pack(pady=10)
+drop.config(highlightbackground='#17408B', fg='black')
 
 myButton = Button(screen, text="Generate Shot Chart", command=myClick, fg='black', font=('Helvetica', 14, 'bold'))
 myButton.pack(pady=10)
 
 screen.mainloop()
-
