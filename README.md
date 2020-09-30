@@ -14,3 +14,5 @@ Then, you can execute the program with
 py NBAShotChartGenerator.py
 ```
 And you are ready to go! 
+
+Thanks for the service!
