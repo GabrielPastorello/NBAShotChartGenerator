@@ -98,6 +98,8 @@ def shot_chart(data, title="", color="b", xlim=(-250, 250), ylim=(422.5, -47.5),
 
     if ax is None:
         ax = plt.gca()
+        ax.axes.get_xaxis().set_visible(False)
+        ax.axes.get_yaxis().set_visible(False)
 
     if not flip_court:
         ax.set_xlim(xlim)
@@ -120,9 +122,9 @@ def shot_chart(data, title="", color="b", xlim=(-250, 250), ylim=(422.5, -47.5),
     y_made = data[data['EVENT_TYPE'] == 'Made Shot']['LOC_Y']
 
     # Plot missed shots
-    ax.scatter(x_missed, y_missed, c='r', marker="x", s=300, linewidths=3)
+    ax.scatter(x_missed, y_missed, c='r', cmap='coolwarm_r')
     # Plot made shots
-    ax.scatter(x_made, y_made, facecolors='none', edgecolors='g', marker='o', s=100, linewidths=3)
+    ax.scatter(x_made, y_made, c='g', cmap='coolwarm_r')
 
     # Set the spines to match the rest of court lines, makes outer_lines
     # somewhat unnecessary
